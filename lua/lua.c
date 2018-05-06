@@ -445,7 +445,7 @@ static int pmain(lua_State *L)
     return 0;
 }
 
-#if !defined(RT_USING_LUA)
+#if !defined(PKG_USING_LUA2RTT)
 int main(int argc, char **argv)
 {
 #else

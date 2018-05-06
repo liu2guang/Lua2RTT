@@ -9,7 +9,9 @@
  * Date           Author       Notes
  * 2018-05-06     liu2guang    The first version.
  */
-#include "lua2rtt.h"
+#include "lua2rtt.h" 
+#include "shell.h" 
+#include "finsh.h" 
 
 extern rt_size_t rt_strnlen(const char *s, rt_ubase_t maxlen); 
 
