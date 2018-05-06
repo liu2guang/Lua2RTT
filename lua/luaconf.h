@@ -10,7 +10,7 @@
 
 #include <limits.h>
 #include <stddef.h>
-#include <rtthread.h> 
+#include <rtthread.h>
 
 /*
 ** ==================================================================
@@ -298,7 +298,7 @@
 ** CHANGE them if you want to improve this functionality (e.g., by using
 ** GNU readline and history facilities).
 */
-#if !defined(RT_USING_LUA)
+#if !defined(PKG_USING_LUA2RTT)
 #if defined(LUA_USE_READLINE)
 #include <stdio.h>
 #include <readline/readline.h>
@@ -316,7 +316,7 @@
 #define lua_freeline(L,b)   { (void)L; (void)b; }
 #endif // #if defined(LUA_USE_READLINE)
 
-#else // #if defined(RT_USING_LUA)
+#else // #if defined(PKG_USING_LUA2RTT)
 
 #define lua_readline(L,b,p)     (readline4lua(p, b, LUA_MAXINPUT))
 #define lua_saveline(L,idx)     { (void)L; (void)idx; }
@@ -324,14 +324,14 @@
 
 extern int readline4lua(const char *prompt, char *buffer, int length);
 
-#endif // #if defined(RT_USING_LUA)
+#endif // #if defined(PKG_USING_LUA2RTT)
 
 /*
 @@ luai_writestring/luai_writeline define how 'print' prints its results.
 ** They are only used in libraries and the stand-alone program. (The #if
 ** avoids including 'stdio.h' everywhere.)
 */
-#if !defined(RT_USING_LUA)
+#if !defined(PKG_USING_LUA2RTT)
 #if defined(LUA_LIB) || defined(lua_c)
 #include <stdio.h>
 #define luai_writestring(s,l)   fwrite((s), sizeof(char), (l), stdout)
@@ -342,20 +342,20 @@ extern int readline4lua(const char *prompt, char *buffer, int length);
 #define luai_writestring(s, l)  rt_kprintf(s)
 #define luai_writeline()        rt_kprintf("\n")
 
-#endif // defined(RT_USING_LUA)
+#endif // defined(PKG_USING_LUA2RTT)
 
 /*
 @@ luai_writestringerror defines how to print error messages.
 ** (A format string with one argument is enough for Lua...)
 */
-#if !defined(RT_USING_LUA)
+#if !defined(PKG_USING_LUA2RTT)
 #define luai_writestringerror(s,p) \
     (fprintf(stderr, (s), (p)), fflush(stderr))
 #else
 
 #define luai_writestringerror(s,p)   rt_kprintf((s), (p))
 
-#endif // defined(RT_USING_LUA)
+#endif // defined(PKG_USING_LUA2RTT)
 
 
 /* }================================================================== */

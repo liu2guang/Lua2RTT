@@ -1,17 +1,17 @@
 /*
- * @File:   lua2rtt.c 
+ * @File:   lua2rtt.c
  * @Author: liu2guang
  * @Date:   2018-05-06 09:16:56
  *
- * @LICENSE: https://github.com/liu2guang/lua2rtt/blob/master/LICENSE. 
+ * @LICENSE: https://github.com/liu2guang/lua2rtt/blob/master/LICENSE.
  *
  * Change Logs:
  * Date           Author       Notes
  * 2018-05-06     liu2guang    The first version.
  */
-#include "lua2rtt.h" 
-#include "shell.h" 
-#include "finsh.h" 
+#include "lua2rtt.h"
+#include "shell.h"
+#include "finsh.h"
 
 extern rt_size_t rt_strnlen(const char *s, rt_ubase_t maxlen); 
 
@@ -64,62 +64,6 @@ void finsh_lua(struct para *parameters)
     /* recover old rx_indicate */
     rt_device_set_rx_indicate(dev4lua.device, rx_indicate);
 }
-
-static void lua(void *parameters)
-{
-    rt_thread_t lua_thread;
-    const char *device_name = finsh_get_device();
-    rt_device_t device = rt_device_find(device_name);
-    if (device == RT_NULL)
-    {
-        rt_kprintf("%s not find\n", device_name);
-        return;
-    }
-    dev4lua.device = device;
-
-    /*prepare parameters*/
-    struct para *lua_parameters = rt_malloc(sizeof(struct para));
-    if (lua_parameters == NULL)
-    {
-        rt_kprintf("malloc failed at file: %s,line: %d", __FILE__, __LINE__);
-        return;
-    }
-    lua_parameters->argc = 2;
-    char **arg = lua_parameters->argv;
-
-    arg[0] = "lua";
-    if (parameters != NULL)
-    {
-        rt_size_t len = rt_strnlen(parameters, 50);
-        arg[1] = rt_malloc(len + 1);
-        if (arg[1] == NULL)
-        {
-            rt_kprintf("malloc failed at file: %s,line: %d", __FILE__, __LINE__);
-            return;
-        }
-        rt_memset(arg[1], 0, len + 1);
-        strncpy(arg[1], parameters, len);
-    }
-    else
-    {
-        arg[1] = NULL;
-    }
-    arg[2] = NULL;
-
-    /* Run lua interpreter in separate thread */
-    lua_thread = rt_thread_create("lua",
-                                  (void ( *)(void *))finsh_lua,
-                                  (void *)lua_parameters,
-                                  10240,
-                                  rt_thread_self()->current_priority + 1,
-                                  20);
-    if (lua_thread != RT_NULL)
-    {
-        rt_thread_startup(lua_thread);
-    }
-    return;
-}
-FINSH_FUNCTION_EXPORT(lua, lua interpreter);
 
 static void lua_msh(int argc, char **argv)
 {
@@ -177,7 +121,6 @@ static void lua_msh(int argc, char **argv)
     }
     return;
 }
-// MSH_CMD_EXPORT(lua_msh, lua in msh);
 MSH_CMD_EXPORT_ALIAS(lua_msh, lua, lua in msh); 
 
 int readline4lua(const char *prompt, char *buffer, int buffer_size)
@@ -262,5 +205,4 @@ start:
         }
     }
 }
-
 
