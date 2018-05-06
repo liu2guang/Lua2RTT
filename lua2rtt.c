@@ -1,10 +1,15 @@
-/**
- * run lua interpreter from finsh
+/*
+ * @File:   lua2rtt.c 
+ * @Author: liu2guang
+ * @Date:   2018-05-06 09:16:56
+ *
+ * @LICENSE: https://github.com/liu2guang/lua2rtt/blob/master/LICENSE. 
+ *
+ * Change Logs:
+ * Date           Author       Notes
+ * 2018-05-06     liu2guang    The first version.
  */
-
-#include "rtthread.h"
-#include "finsh.h"
-#include "shell.h"
+#include "lua2rtt.h"
 
 extern rt_size_t rt_strnlen(const char *s, rt_ubase_t maxlen); 
 
