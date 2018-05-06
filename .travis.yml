@@ -10,9 +10,6 @@ git:
 
 # 运行编译构建编译脚本之前动作: 
 before_script:
-  # PKG名称
-  PKG_NAME='lua2rtt'
-
   # 更新32位gcc工具链
   - sudo apt-get update 
   - "sudo apt-get -qq install gcc-multilib libc6:i386 libgcc1:i386 gcc-4.6-base:i386 libstdc++5:i386 libstdc++6:i386 libsdl-dev || true" 
@@ -23,9 +20,9 @@ before_script:
   
   # 创建packages目录, 拷贝LittlevGL2RTT源码到bsp pkg下, 并拷贝对应SConscript脚本
   - mkdir /home/travis/build/liu2guang/RT-Thread/bsp/imxrt1052-evk/packages
-  - cp /home/travis/build/liu2guang/$PKG_NAME/tools/rtconfig.h /home/travis/build/liu2guang/RT-Thread/bsp/imxrt1052-evk/rtconfig.h
-  - cp /home/travis/build/liu2guang/$PKG_NAME/tools/pkg_scons /home/travis/build/liu2guang/RT-Thread/bsp/imxrt1052-evk/packages/SConscript
-  - cp -r /home/travis/build/liu2guang/$PKG_NAME /home/travis/build/liu2guang/RT-Thread/bsp/imxrt1052-evk/packages/$PKG_NAME
+  - cp /home/travis/build/liu2guang/lua2rtt/tools/rtconfig.h /home/travis/build/liu2guang/RT-Thread/bsp/imxrt1052-evk/rtconfig.h
+  - cp /home/travis/build/liu2guang/lua2rtt/tools/pkg_scons /home/travis/build/liu2guang/RT-Thread/bsp/imxrt1052-evk/packages/SConscript
+  - cp -r /home/travis/build/liu2guang/lua2rtt /home/travis/build/liu2guang/RT-Thread/bsp/imxrt1052-evk/packages/lua2rtt
   
   # 导出RT-Thread运行bsp根目录和编译器
   - export RTT_ROOT=`/home/travis/build/liu2guang/RT-Thread/bsp/imxrt1052-evk` 
