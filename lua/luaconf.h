@@ -318,11 +318,11 @@
 
 #else // #if defined(PKG_USING_LUA2RTT)
 
-#define lua_readline(L,b,p)     (readline4lua(p, b, LUA_MAXINPUT))
+extern int lua2rtt_readline(const char *prompt, char *buffer, int length);
+
+#define lua_readline(L,b,p)     (lua2rtt_readline(p, b, LUA_MAXINPUT))
 #define lua_saveline(L,idx)     { (void)L; (void)idx; }
 #define lua_freeline(L,b)       { (void)L; (void)b; }
-
-extern int readline4lua(const char *prompt, char *buffer, int length);
 
 #endif // #if defined(PKG_USING_LUA2RTT)
 

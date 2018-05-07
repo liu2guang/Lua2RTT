@@ -12,6 +12,61 @@
 #ifndef __LUA2RTT_H_
 #define __LUA2RTT_H_
 
-#include "rtthread.h"
+#include "rtthread.h" 
+
+#define LUA2RTT_USING_DEBUG
+#ifndef LUA2RTT_USING_DEBUG
+#define LUA2RTT_DBG(fmt, ...) 
+#else
+#define LUA2RTT_DBG(fmt, ...)                \
+do{                                          \
+    rt_kprintf("[\033[32mLua2RTT\033[0m] "); \
+    rt_kprintf(fmt, ##__VA_ARGS__);          \
+}while(0)
+#endif
+
+#ifndef LUA2RTT_THREAD_STACK_SIZE
+#define LUA2RTT_THREAD_STACK_SIZE 10240
+#endif
+#ifndef LUA2RTT_CMD_SIZE
+#define LUA2RTT_CMD_SIZE      80
+#endif
+#ifndef LUA2RTT_HISTORY_LINES
+#define LUA2RTT_HISTORY_LINES 5
+#endif
+
+enum lua2rtt_input_stat
+{
+    LUA2RTT_WAIT_NORMAL,
+    LUA2RTT_WAIT_SPEC_KEY,
+    LUA2RTT_WAIT_FUNC_KEY,
+};
+
+struct lua2rtt
+{
+    rt_thread_t thread; 
+    struct rt_semaphore rx_sem; 
+    
+    enum lua2rtt_input_stat stat; 
+    
+    /* 输入参数 */ 
+    int   argc; 
+    char *argv[3]; 
+    
+    rt_uint16_t history_cur; 
+    rt_uint16_t history_count; 
+    
+    char lua_history[LUA2RTT_HISTORY_LINES][LUA2RTT_CMD_SIZE]; 
+    
+    char line[LUA2RTT_CMD_SIZE]; 
+    rt_uint8_t line_position;
+    rt_uint8_t line_curpos; 
+    
+#ifndef RT_USING_POSIX
+    rt_device_t device; 
+    rt_err_t (*rx_indicate)(rt_device_t dev, rt_size_t size); /* msh回调函数 */
+#endif 
+}; 
+typedef struct lua2rtt *lua2rtt_t; 
 
 #endif
