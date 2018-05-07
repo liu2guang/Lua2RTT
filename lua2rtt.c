@@ -19,40 +19,20 @@
 
 static struct lua2rtt handle = {0}; 
 
-//static rt_err_t lua2rtt_putc(rt_uint8_t ch)
-//{
-//#if defined(RT_USING_POSIX) 
-//    putchar(ch); 
-//#else 
-//    rt_err_t ret = RT_EOK; 
-//    if(rt_device_write(handle.device, (-1), &ch, 1) != 1)
-//    {
-//        ret = RT_EFULL; 
-//    }
-//    return ret;
-//#endif /* RT_USING_POSIX */ 
-//}
-
 static rt_uint8_t lua2rtt_getc(void)
 {
-#if defined(RT_USING_POSIX) 
-    return getchar(); 
-#else 
     rt_uint8_t ch = 0; 
     while(rt_device_read(handle.device, (-1), &ch, 1) != 1)
     {
         rt_sem_take(&(handle.rx_sem), RT_WAITING_FOREVER);
     }
     return ch;
-#endif /* RT_USING_POSIX */ 
 }
 
-#if !defined(RT_USING_POSIX) 
 static rt_err_t lua2rtt_rxcb(rt_device_t dev, rt_size_t size)
 {
     return rt_sem_release(&(handle.rx_sem)); 
 }
-#endif /* RT_USING_POSIX */ 
 
 static rt_bool_t lua2rtt_handle_history(const char *prompt)
 {
@@ -282,10 +262,11 @@ start:
             continue;
         }
         
-        /* 判断输出命令是否过长 */
-        if(handle.line_position >= buffer_size)
+        /* 判断输出命令是否过长, 过长后不处理字符, 默认128Byte字符 */
+        if(handle.line_position >= LUA2RTT_CMD_SIZE)
         {
-            handle.line_position = 0; 
+            //handle.line_position = LUA2RTT_CMD_SIZE-1; 
+            continue; 
         }
         
         /* 处理普通字符, 将普通字符添加到缓存中 */ 
@@ -312,18 +293,12 @@ start:
         ch = 0;
         handle.line_curpos++;
         handle.line_position++;
-        if(handle.line_position >= LUA2RTT_CMD_SIZE)
-        {
-            handle.line_curpos = 0;
-            handle.line_position = 0;
-        }
     }
 }
 
 static void lua2rtt_run(void *p)
 {
-#if !defined(RT_USING_POSIX) 
-    const char *device_name = finsh_get_device(); 
+    const char *device_name = RT_CONSOLE_DEVICE_NAME; 
     
     handle.device = rt_device_find(device_name);
     if(handle.device == RT_NULL)
@@ -336,8 +311,7 @@ static void lua2rtt_run(void *p)
     handle.rx_indicate = handle.device->rx_indicate; 
     
     /* 设置Lua2RTT的串口回调函数 */ 
-    rt_device_set_rx_indicate(handle.device, lua2rtt_rxcb); 
-#endif 
+    rt_device_set_rx_indicate(handle.device, lua2rtt_rxcb);
     
     /* 阻塞式运行lua解析器 */ 
     extern int lua_main(int argc, char **argv); 
@@ -350,9 +324,7 @@ static void lua2rtt_run(void *p)
     }
     
     /* 退出Lua2RTT解析器时恢复msh对串口的控制权 */ 
-#if !defined(RT_USING_POSIX) 
     rt_device_set_rx_indicate(handle.device, handle.rx_indicate); 
-#endif 
 }
 
 /* MSH Lua解析器启动命令 */ 
@@ -377,11 +349,8 @@ static int lua2rtt(int argc, char **argv)
         rt_memset(handle.line, 0x00, LUA2RTT_CMD_SIZE); 
         handle.line_position = 0; 
         handle.line_curpos = 0; 
-        
-#if !defined(RT_USING_POSIX) 
         handle.device = RT_NULL; 
         handle.rx_indicate = RT_NULL; 
-#endif 
     }
     
     /* 初始化Lua2RTT串口数据接收信号量 */ 
