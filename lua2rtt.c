@@ -54,6 +54,48 @@ static rt_err_t lua2rtt_rxcb(rt_device_t dev, rt_size_t size)
 }
 #endif /* RT_USING_POSIX */ 
 
+static rt_bool_t lua2rtt_handle_history(const char *prompt)
+{
+    rt_kprintf("\033[2K\r");
+    rt_kprintf("%s%s", prompt, handle.line);
+    return RT_FALSE;
+}
+
+static void lua2rtt_push_history(void)
+{
+    if(handle.line_position > 0)
+    {
+        if(handle.history_count >= LUA2RTT_HISTORY_LINES) 
+        {
+            if(rt_memcmp(&handle.lua_history[LUA2RTT_HISTORY_LINES-1], handle.line, LUA2RTT_CMD_SIZE))
+            {
+                int index; 
+                for(index = 0; index < FINSH_HISTORY_LINES - 1; index ++)
+                {
+                    rt_memcpy(&handle.lua_history[index][0], &handle.lua_history[index+1][0], LUA2RTT_CMD_SIZE);
+                }
+                rt_memset(&handle.lua_history[index][0], 0, LUA2RTT_CMD_SIZE);
+                rt_memcpy(&handle.lua_history[index][0], handle.line, handle.line_position); 
+                
+                handle.history_count = LUA2RTT_HISTORY_LINES;
+            }
+        }
+        else
+        {
+            if(handle.history_count == 0 || rt_memcmp(&handle.lua_history[handle.history_count-1], handle.line, LUA2RTT_CMD_SIZE))
+            {
+                handle.history_current = handle.history_count;
+                rt_memset(&handle.lua_history[handle.history_count][0], 0, LUA2RTT_CMD_SIZE);
+                rt_memcpy(&handle.lua_history[handle.history_count][0], handle.line, handle.line_position);
+
+                handle.history_count++; 
+            }
+        }
+    }
+    
+    handle.history_current = handle.history_count;
+}
+
 /* Lua回调函数 */ 
 int lua2rtt_readline(const char *prompt, char *buffer, int buffer_size)
 {
@@ -87,15 +129,51 @@ start:
             
             if(ch == 0x41)      /* 键盘UP键 */ 
             {
+                if(handle.history_current > 0)
+                {
+                    handle.history_current--;
+                }
+                else
+                {
+                    handle.history_current = 0; 
+                    continue;
+                }
+                
+                /* copy the history command */
+                rt_memcpy(handle.line, &handle.lua_history[handle.history_current][0], LUA2RTT_CMD_SIZE); 
+                handle.line_curpos = handle.line_position = rt_strlen(handle.line); 
+                lua2rtt_handle_history(prompt);
+                
                 continue;
             }
             else if(ch == 0x42) /* 键盘DOWN键 */ 
             {
+                if(handle.history_current < (handle.history_count-1))
+                {
+                    handle.history_current++;
+                }
+                else
+                {
+                    /* set to the end of history */
+                    if(handle.history_count != 0)
+                    {
+                        handle.history_current = handle.history_count-1; 
+                    }
+                    else
+                    {
+                        continue; 
+                    }
+                }
+
+                rt_memcpy(handle.line, &handle.lua_history[handle.history_current][0], LUA2RTT_CMD_SIZE); 
+                handle.line_curpos = handle.line_position = rt_strlen(handle.line); 
+                lua2rtt_handle_history(prompt); 
+                
                 continue;
             }
             else if(ch == 0x44) /* 键盘LEFT键 */ 
             {
-                if(handle.line_curpos > 0)
+                if(handle.line_curpos)
                 {
                     rt_kprintf("\b");
                     handle.line_curpos--; 
@@ -159,6 +237,7 @@ start:
         else if(ch == '\r' || ch == '\n')
         {
             /* 存入历史记录 */ 
+            lua2rtt_push_history(); 
             
             rt_kprintf("\n"); 
             if(handle.line_position == 0)
@@ -171,7 +250,8 @@ start:
                 
                 /* 拷贝输入命令 */ 
                 rt_strncpy(buffer, handle.line, handle.line_position); 
-                rt_memset(handle.line, 0x00, sizeof(handle.line));
+                rt_memset(handle.line, 0x00, sizeof(handle.line)); 
+                buffer[handle.line_position] = 0; 
                 handle.line_curpos = handle.line_position = 0;
                 return temp; 
             }
@@ -232,7 +312,7 @@ start:
         ch = 0;
         handle.line_curpos++;
         handle.line_position++;
-        if(handle.line_position >= buffer_size)
+        if(handle.line_position >= LUA2RTT_CMD_SIZE)
         {
             handle.line_curpos = 0;
             handle.line_position = 0;
@@ -278,7 +358,31 @@ static void lua2rtt_run(void *p)
 /* MSH Lua解析器启动命令 */ 
 static int lua2rtt(int argc, char **argv) 
 {
-    rt_memset(&handle, 0x00, sizeof(struct lua2rtt)); 
+    static rt_bool_t history_init = RT_FALSE; 
+    
+    /* 初始化Lua2RTT句柄, 但是不初始化重复初始化历史记录 */ 
+    if(history_init == RT_FALSE)
+    {
+        rt_memset(&handle, 0x00, sizeof(struct lua2rtt)); 
+        history_init = RT_TRUE; 
+    }
+    else
+    {
+        handle.thread = RT_NULL; 
+        handle.stat = LUA2RTT_WAIT_NORMAL; 
+        handle.argc = 0; 
+        handle.argv[0] = RT_NULL; 
+        handle.argv[1] = RT_NULL; 
+        handle.argv[2] = RT_NULL; 
+        rt_memset(handle.line, 0x00, LUA2RTT_CMD_SIZE); 
+        handle.line_position = 0; 
+        handle.line_curpos = 0; 
+        
+#if !defined(RT_USING_POSIX) 
+        handle.device = RT_NULL; 
+        handle.rx_indicate = RT_NULL; 
+#endif 
+    }
     
     /* 初始化Lua2RTT串口数据接收信号量 */ 
     rt_sem_init(&(handle.rx_sem), "lua2rtt_rxsem", 0, RT_IPC_FLAG_FIFO); 

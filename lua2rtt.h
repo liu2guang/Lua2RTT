@@ -29,7 +29,7 @@ do{                                          \
 #define LUA2RTT_THREAD_STACK_SIZE 10240
 #endif
 #ifndef LUA2RTT_CMD_SIZE
-#define LUA2RTT_CMD_SIZE      80
+#define LUA2RTT_CMD_SIZE 80
 #endif
 #ifndef LUA2RTT_HISTORY_LINES
 #define LUA2RTT_HISTORY_LINES 5
@@ -53,16 +53,15 @@ struct lua2rtt
     int   argc; 
     char *argv[3]; 
     
-    rt_uint16_t history_cur; 
-    rt_uint16_t history_count; 
-    
     char lua_history[LUA2RTT_HISTORY_LINES][LUA2RTT_CMD_SIZE]; 
+    rt_uint16_t history_count; 
+    rt_uint16_t history_current; 
     
     char line[LUA2RTT_CMD_SIZE]; 
     rt_uint8_t line_position;
     rt_uint8_t line_curpos; 
     
-#ifndef RT_USING_POSIX
+#if !defined(RT_USING_POSIX) 
     rt_device_t device; 
     rt_err_t (*rx_indicate)(rt_device_t dev, rt_size_t size); /* msh»Øµ÷º¯Êý */
 #endif 
