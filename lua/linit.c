@@ -15,14 +15,14 @@
 #include "lrotable.h"
 #include "luaconf.h"
 
-#if defined(RT_LUA_USE_EXLIBS)
+#if defined(LUA2RTT_USING_EXLIBS) 
 #include "lexlibs.h"
 #endif
 
 #if defined(LUA_EXLIBS_ROM)
 #undef _ROM
 #define _ROM( name, openf, table ) extern int openf(lua_State *);
-LUA_EXLIBS_ROM
+LUA_EXLIBS_ROM; 
 #endif
 
 static const luaL_Reg lualibs[] =

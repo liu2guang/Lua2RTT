@@ -265,7 +265,6 @@ start:
         /* 判断输出命令是否过长, 过长后不处理字符, 默认128Byte字符 */
         if(handle.line_position >= LUA2RTT_CMD_SIZE)
         {
-            //handle.line_position = LUA2RTT_CMD_SIZE-1; 
             continue; 
         }
         

@@ -24,7 +24,6 @@
 #define LUA_OPTIMIZE_MEMORY         0
 #endif
 
-
 /*
 @@ LUA_ANSI controls the use of non-ansi features.
 ** CHANGE it (define it) if you want Lua to avoid the use of any
@@ -33,7 +32,6 @@
 #if defined(__STRICT_ANSI__)
 #define LUA_ANSI
 #endif
-
 
 #if !defined(LUA_ANSI) && defined(_WIN32)
 #define LUA_WIN
@@ -62,7 +60,6 @@
 #define LUA_USE_ULONGJMP
 #endif
 
-
 /*
 @@ LUA_PATH and LUA_CPATH are the names of the environment variables that
 @* Lua check to set its paths.
@@ -73,7 +70,6 @@
 #define LUA_PATH        "LUA_PATH"
 #define LUA_CPATH       "LUA_CPATH"
 #define LUA_INIT        "LUA_INIT"
-
 
 /*
 @@ LUA_PATH_DEFAULT is the default path that Lua uses to look for
@@ -102,7 +98,7 @@
         ".\\?.lua;"  LUA_LDIR"?.lua;"  LUA_LDIR"?\\init.lua;" \
                      LUA_CDIR"?.lua;"  LUA_CDIR"?\\init.lua"
 #define LUA_CPATH_DEFAULT \
-    ".\\?.dll;"  LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll"
+        ".\\?.dll;"  LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll" 
 #endif // #ifndef LUA_RPC
 
 #else // #if defined(_WIN32)
@@ -818,7 +814,7 @@ union luai_Cast
 
 #define lua_popen(L,c,m)    ((void)((void)c, m),  \
         luaL_error(L, LUA_QL("popen") " not supported"), (FILE*)0)
-#define lua_pclose(L,file)      ((void)((void)L, file), 0)
+#define lua_pclose(L,file)  ((void)((void)L, file), 0)
 
 #endif
 

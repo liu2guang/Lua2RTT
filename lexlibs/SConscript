@@ -1,0 +1,19 @@
+from building import * 
+import rtconfig
+
+# get current dir path
+cwd = GetCurrentDir()
+
+# init src and inc vars
+src = []
+inc = []
+
+# add Lua2RTT common include
+inc = inc + [cwd]
+
+# add Lua2RTT basic code
+src = Glob('*.c')
+
+group = DefineGroup('lua2rtt_exlibs', src, depend = ['LUA2RTT_USING_EXLIBS'], CPPPATH = inc)
+
+Return('group')
