@@ -29,3 +29,10 @@ lua2rtt 是在RTThread3.0版本移植的elua5.1.4版本, 目的是无缝嵌入RT
 ## 3. 开发情况
 
 1. 开发环境: RT1050-Fire + MDK5.22.0 + ENV0.7. 
+
+## 4. 教程推荐
+
+1. AlbertS 作者简书文章: [点击跳转](https://www.jianshu.com/u/8fad76e7e05c).
+2. Lua 5.1 参考手册中文版: [点击跳转](https://www.codingnow.com/2000/download/lua_manual.html). 
+3. Lua 5.3 参考手册中文版: [点击跳转](http://cloudwu.github.io/lua53doc/contents.html). 
+  
