@@ -10,8 +10,8 @@ lua2rtt 是在RTThread3.0版本移植的elua5.1.4版本, 目的是无缝嵌入RT
 目前安装lua2rtt库未添加到rtt官方pkgs包中, 需要手动下载menuconfig相关文件. 
 
 1. 下载menuconfig所需文件: [下载地址](https://github.com/liu2guang/mypackages/tree/master/lua2rtt "下载地址").
-2. 将下载的`Kconfig`和`package.json`文件放到`env\packages\packages\lua2rtt\`目录下. 
-3. 在`env\packages\packages\Kconfig`文件中添加`source "$PKGS_DIR/packages/language/lua2rtt/Kconfig"`.
+2. 将下载的`Kconfig`和`package.json`文件放到`env\packages\packages\language\lua2rtt\`目录下. 
+3. 打开`env\packages\packages\language\Kconfig\`，在文件中添加`source "$PKGS_DIR/packages/language/lua2rtt/Kconfig"`.
 4. 在env中运行menuconfig. 
 5. 进入RT-Thread online packages -> language packages目录. 
 6. 开启lua2rtt, 选择version为lateset最新版本.

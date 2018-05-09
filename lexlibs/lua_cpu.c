@@ -1,5 +1,5 @@
 /*
- * @File:   cpu.c
+ * @File:   lua_cpu.c
  * @Author: liu2guang
  * @Date:   2018-05-06 09:16:56
  *
@@ -14,7 +14,7 @@
 #include <lauxlib.h>
 #include <lualib.h>
 
-#define TO_32BIT(L, n) (((signed long long)luaL_checknumber((L), (n))) & 0x0ffffffff)
+#define TO_32BIT(L, n) (((signed long long)luaL_checknumber((L), (n))) & 0x0ffffffff) 
 
 /* Lua: data = r08(address) */ 
 static int cpu_r08(lua_State *L)
@@ -85,23 +85,30 @@ static int cpu_w32(lua_State *L)
     return 0; 
 }
 
+/* Lua: sleep(tick) */ 
+static int cpu_sleep(lua_State *L)
+{
+    rt_thread_delay((uint32_t)TO_32BIT(L, 1)); 
+    return 0; 
+}
+
 // Module function map 
 #define MIN_OPT_LEVEL 2 
 #include "lrodefs.h" 
 static const LUA_REG_TYPE cpu_map[] =
 {
-    {LSTRKEY("r08"), LFUNCVAL(cpu_r08)}, 
-    {LSTRKEY("w08"), LFUNCVAL(cpu_w08)}, 
-    {LSTRKEY("r16"), LFUNCVAL(cpu_r16)}, 
-    {LSTRKEY("w16"), LFUNCVAL(cpu_w16)}, 
-    {LSTRKEY("r32"), LFUNCVAL(cpu_r32)}, 
-    {LSTRKEY("w32"), LFUNCVAL(cpu_w32)}, 
-    {NULL, NULL} 
+    {LSTRKEY("r08")  , LFUNCVAL(cpu_r08)  }, 
+    {LSTRKEY("w08")  , LFUNCVAL(cpu_w08)  }, 
+    {LSTRKEY("r16")  , LFUNCVAL(cpu_r16)  }, 
+    {LSTRKEY("w16")  , LFUNCVAL(cpu_w16)  }, 
+    {LSTRKEY("r32")  , LFUNCVAL(cpu_r32)  }, 
+    {LSTRKEY("w32")  , LFUNCVAL(cpu_w32)  }, 
+    {LSTRKEY("sleep"), LFUNCVAL(cpu_sleep)}, 
+    {LNILKEY, LNILKEY} 
 }; 
 
 /* ´ò¿ªCPU¿â */ 
 LUALIB_API int luaopen_cpu(lua_State *L)
 {
-    luaL_register(L, "cpu", cpu_map); 
-    return 1;
+    LREGISTER(L, "cpu", cpu_map); 
 } 
