@@ -37,7 +37,6 @@ static const int liolib_keys[] = {(int) &luaL_callmeta, (int) &luaL_typerror, (i
 
 static const char *const fnames[] = {"input", "output"};
 
-
 static int pushresult(lua_State *L, int i, const char *filename)
 {
     int en = errno;  /* calls to Lua API may change this value */
@@ -601,22 +600,22 @@ const luaL_Reg iolib[] =
 };
 #endif
 
-#undef MIN_OPT_LEVEL
+#undef  MIN_OPT_LEVEL
 #define MIN_OPT_LEVEL 1
-#include "lrodefs.h"
+#include "lrodefs.h" 
 const LUA_REG_TYPE flib[] =
 {
-    {LSTRKEY("close"), LFUNCVAL(io_close)},
-    {LSTRKEY("flush"), LFUNCVAL(f_flush)},
-    {LSTRKEY("lines"), LFUNCVAL(f_lines)},
-    {LSTRKEY("read"), LFUNCVAL(f_read)},
-    {LSTRKEY("seek"), LFUNCVAL(f_seek)},
-    {LSTRKEY("setvbuf"), LFUNCVAL(f_setvbuf)},
-    {LSTRKEY("write"), LFUNCVAL(f_write)},
-    {LSTRKEY("__gc"), LFUNCVAL(io_gc)},
+    {LSTRKEY("close")     , LFUNCVAL(io_close)   },
+    {LSTRKEY("flush")     , LFUNCVAL(f_flush)    },
+    {LSTRKEY("lines")     , LFUNCVAL(f_lines)    },
+    {LSTRKEY("read")      , LFUNCVAL(f_read)     },
+    {LSTRKEY("seek")      , LFUNCVAL(f_seek)     },
+    {LSTRKEY("setvbuf")   , LFUNCVAL(f_setvbuf)  },
+    {LSTRKEY("write")     , LFUNCVAL(f_write)    },
+    {LSTRKEY("__gc")      , LFUNCVAL(io_gc)      },
     {LSTRKEY("__tostring"), LFUNCVAL(io_tostring)},
 #if LUA_OPTIMIZE_MEMORY > 0
-    {LSTRKEY("__index"), LROVAL(flib)},
+    {LSTRKEY("__index")   , LROVAL(flib)         },
 #endif
     {LNILKEY, LNILVAL}
 };

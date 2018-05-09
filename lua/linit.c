@@ -27,21 +27,22 @@ LUA_EXLIBS_ROM;
 
 static const luaL_Reg lualibs[] =
 {
-    {"", luaopen_base},
+    {""             , luaopen_base   },
     {LUA_LOADLIBNAME, luaopen_package},
-    {LUA_IOLIBNAME, luaopen_io},
-    {LUA_STRLIBNAME, luaopen_string},
+    {LUA_IOLIBNAME  , luaopen_io     },
+    {LUA_STRLIBNAME , luaopen_string },
 #if LUA_OPTIMIZE_MEMORY == 0
-    {LUA_MATHLIBNAME, luaopen_math},
-    {LUA_TABLIBNAME, luaopen_table},
-    {LUA_DBLIBNAME, luaopen_debug},
+    {LUA_MATHLIBNAME, luaopen_math   },
+    {LUA_TABLIBNAME , luaopen_table  },
+    {LUA_DBLIBNAME  , luaopen_debug  },
+    {LUA_OSLIBNAME  , luaopen_os     },
 #endif
 #if defined(LUA_EXLIBS_ROM)
-#undef _ROM
-#define _ROM( name, openf, table ) { name, openf },
+#undef  _ROM
+#define _ROM(name, openf, table) {name, openf},
     LUA_EXLIBS_ROM
 #endif
-    {NULL, NULL}
+    {NULL, NULL} 
 };
 
 extern const luaR_entry strlib[];
@@ -57,10 +58,10 @@ LUA_EXLIBS_ROM
 const luaR_table lua_rotable[] =
 {
 #if LUA_OPTIMIZE_MEMORY > 0
-    {LUA_STRLIBNAME, strlib},
+    {LUA_STRLIBNAME, strlib   },
     {LUA_TABLIBNAME, tab_funcs},
-    {LUA_DBLIBNAME, dblib},
-    {LUA_COLIBNAME, co_funcs},
+    {LUA_DBLIBNAME , dblib    },
+    {LUA_COLIBNAME , co_funcs },
 #if defined(LUA_EXLIBS_ROM) && LUA_OPTIMIZE_MEMORY == 2
 #undef _ROM
 #define _ROM( name, openf, table ) { name, table },
@@ -73,6 +74,7 @@ const luaR_table lua_rotable[] =
 LUALIB_API void luaL_openlibs(lua_State *L)
 {
     const luaL_Reg *lib = lualibs;
+    
     for (; lib->func; lib++)
     {
         lua_pushcfunction(L, lib->func);
@@ -80,4 +82,3 @@ LUALIB_API void luaL_openlibs(lua_State *L)
         lua_call(L, 1, 0);
     }
 }
-

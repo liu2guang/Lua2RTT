@@ -24,18 +24,17 @@
 #define LNUMVAL                     LRO_NUMVAL
 #define LROVAL                      LRO_ROVAL
 #define LNILVAL                     LRO_NILVAL
-#define LREGISTER(L, name, table)\
-  return 0
+#define LREGISTER(L, name, table)   \
+    return 0
 #else
 #define LUA_REG_TYPE                luaL_reg
 #define LSTRKEY(x)                  x
 #define LNILKEY                     NULL
 #define LFUNCVAL(x)                 x
 #define LNILVAL                     NULL
-#define LREGISTER(L, name, table)\
-  luaL_register(L, name, table);\
-  return 1
-#endif
+#define LREGISTER(L, name, table)   \
+    luaL_register(L, name, table);  \
+    return 1
+#endif 
 
 #endif /* lrodefs_h */
-
