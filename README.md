@@ -35,4 +35,11 @@ lua2rtt 是在RTThread3.0版本移植的elua5.1.4版本, 目的是无缝嵌入RT
 1. AlbertS 作者简书文章: [点击跳转](https://www.jianshu.com/u/8fad76e7e05c).
 2. Lua 5.1 参考手册中文版: [点击跳转](https://www.codingnow.com/2000/download/lua_manual.html). 
 3. Lua 5.3 参考手册中文版: [点击跳转](http://cloudwu.github.io/lua53doc/contents.html). 
+
+## 5. 注意事项
+
+1. 当开发坏境是MDK时os.date不支持`!`格式化时间. 原因RTT的armlibc不支持gmtime函数. 待RTT处理. 
   
+## 6. 欢迎加入. 
+
+非官方讨论腾讯QQ群:289156309(200人). 
