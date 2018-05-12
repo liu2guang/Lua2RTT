@@ -26,9 +26,10 @@ lua2rtt 是在RTThread3.0版本移植的elua5.1.4版本, 目的是无缝嵌入RT
 4. 执行pkgs --update, 并输入`Y`表示同意删除pkg包文件. 
 5. 执行scons/scons --target=xxx, 进行编译生成工程, 下载运行.
 
-## 3. 开发情况
+## 3. 开发环境
 
-1. 开发环境: RT1050-Fire + MDK5.22.0 + ENV0.7. 
+1. RT1050-Fire + MDK5.22.0 + ENV0.7. 
+2. STM32F469-Discovery + MDK5.22.0 + ENV0.7. 
 
 ## 4. 教程推荐
 
