@@ -30,7 +30,7 @@ static int cpu_r08(lua_State *L)
 static int cpu_w08(lua_State *L)
 {
     uint32_t addr;
-    uint8_t data = (uint8_t)TO_32BIT(L, 2);
+    uint8_t data = (uint8_t)TO_32BIT(L, 2); 
 
     luaL_checkinteger(L, 1);
     addr = (uint32_t)TO_32BIT(L, 1);

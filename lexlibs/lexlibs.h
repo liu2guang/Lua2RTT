@@ -12,7 +12,8 @@
 #ifndef __LEXLIBS_H__ 
 #define __LEXLIBS_H__ 
 
-#define LUA_EXLIBS_ROM                                    \
-    _ROM("cpu", luaopen_cpu, cpu_map) 
-
+#define LUA_EXLIBS_ROM                   \
+    _ROM("cpu" , luaopen_cpu , cpu_map ) \
+    _ROM("pin" , luaopen_pin , pin_map ) \
+    
 #endif
