@@ -5,6 +5,12 @@
 
 lua2rtt 是在RTThread3.0版本移植的elua5.1.4版本, 目的是无缝嵌入RTT, 无需开发者去移植. 如果您觉得该库看得顺眼舒服，请捐赠颗小星星. 小星星就是更新的动力!!! 
 
+已测试跑通的bsp有以下：
+1. RT1050
+2. STM32F10x_HAL
+3. STM32F4xx_HAL
+4. allwinner_v3s
+
 ## 1. 安装lua2rtt
 
 目前安装lua2rtt库未添加到rtt官方pkgs包中, 需要手动下载menuconfig相关文件. 
