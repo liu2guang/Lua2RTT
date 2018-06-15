@@ -313,6 +313,10 @@ static void lua2rtt_run(void *p)
     rt_device_set_rx_indicate(handle.device, lua2rtt_rxcb);
     
     /* 阻塞式运行lua解析器 */ 
+    if(handle.argc == 1)
+    {
+        rt_kprintf("\nPress CTRL+D to exit Lua.\n"); 
+    }
     extern int lua_main(int argc, char **argv); 
     lua_main(handle.argc, handle.argv); 
     

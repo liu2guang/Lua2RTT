@@ -15,33 +15,31 @@
 #include "lrotable.h"
 #include "luaconf.h"
 
-#if defined(LUA2RTT_USING_EXLIBS) 
-#include "lexlibs.h"
-#endif
-
-#if defined(LUA_EXLIBS_ROM)
-#undef _ROM
-#define _ROM( name, openf, table ) extern int openf(lua_State *);
-LUA_EXLIBS_ROM; 
-#endif
+#if defined(LUA2RTT_USING_EXLIBS_CJSON)
+    LUALIB_API int luaopen_cjson(lua_State *L); 
+#endif 
 
 static const luaL_Reg lualibs[] =
 {
+    /* 基本库 */ 
     {""             , luaopen_base   },
     {LUA_LOADLIBNAME, luaopen_package},
     {LUA_IOLIBNAME  , luaopen_io     },
     {LUA_STRLIBNAME , luaopen_string },
+
+    /* 扩展库 */ 
 #if LUA_OPTIMIZE_MEMORY == 0
     {LUA_MATHLIBNAME, luaopen_math   },
     {LUA_TABLIBNAME , luaopen_table  },
     {LUA_DBLIBNAME  , luaopen_debug  },
     {LUA_OSLIBNAME  , luaopen_os     },
 #endif
-#if defined(LUA_EXLIBS_ROM)
-#undef  _ROM
-#define _ROM(name, openf, table) {name, openf},
-    LUA_EXLIBS_ROM
-#endif
+
+    /* 外部库 */ 
+#if defined(LUA2RTT_USING_EXLIBS_CJSON)
+    {"cjson"        , luaopen_cjson  }, 
+#endif 
+
     {NULL, NULL} 
 };
 

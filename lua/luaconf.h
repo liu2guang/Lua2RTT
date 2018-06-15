@@ -107,7 +107,7 @@
 #define LUA_LDIR    LUA_ROOT "share/lua/5.1/"
 #define LUA_CDIR    LUA_ROOT "lib/lua/5.1/"
 
-/* RT-thread luaдё©И╪стьд╛ход©б╪ */
+/* RT-thread luaдёО©╫О©╫О©╫О©╫О©╫д╛О©╫О©╫д©б╪ */
 #ifndef LUA_RPC
 #define LUA_PATH_DEFAULT  "/mmc/?.lua;/mmc/?.lc;/rom/?.lua;/rom/?.lc;./?.lua;./?.lc"
 #define LUA_CPATH_DEFAULT ""
