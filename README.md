@@ -1,52 +1,52 @@
-# :tada: Lua2rtt :tada: #
+# :tada: Lua2RTT :tada: #
 
-[![Build Status](https://travis-ci.org/liu2guang/lua2rtt.svg?branch=master)](https://travis-ci.org/liu2guang/lua2rtt)
-[![release](https://img.shields.io/badge/Release-v0.0.1-orange.svg)](https://github.com/liu2guang/LittlevGL2RTT/releases)
+[![Build Status](https://travis-ci.org/liu2guang/Lua2RTT.svg?branch=master)](https://travis-ci.org/liu2guang/Lua2RTT)
+[![release](https://img.shields.io/badge/Release-v1.0.0-orange.svg)](https://github.com/liu2guang/Lua2RTT/releases)
 
-lua2rtt是在RTThread3.0版本移植的lua仓库, 目的是无缝嵌入RTT, 无需开发者去移植. 如果您觉得该库看得顺眼舒服，请捐赠颗小星星. 小星星就是更新的动力!!! 
+Lua2RTT是在RTThread3.0版本移植的Lua库, 目的是无缝嵌入RTT, 无需开发者去移植. 如果您觉得该库看得顺眼舒服，请捐赠颗小星星. 小星星就是更新的动力!!! 
 
-已测试跑通的bsp有以下：
-1. RT1050
-2. STM32F10x_HAL
-3. STM32F4xx_HAL
-4. allwinner_v3s
+## 1. 效果图
 
-## 1. 安装lua2rtt
+![效果图](https://i.imgur.com/NzP2WOe.gif)
 
-目前安装lua2rtt库未添加到rtt官方pkgs包中, 需要手动下载menuconfig相关文件. 
+## 2. 安装Lua2RTT
 
-1. 下载menuconfig所需文件: [下载地址](https://github.com/liu2guang/mypackages/tree/master/lua2rtt "下载地址").
-2. 将下载的`Kconfig`和`package.json`文件放到`env\packages\packages\language\lua2rtt\`目录下. 
-3. 打开`env\packages\packages\language\Kconfig\`，在文件中添加`source "$PKGS_DIR/packages/language/lua2rtt/Kconfig"`.
-4. 在env中运行menuconfig. 
-5. 进入RT-Thread online packages -> language packages目录. 
-6. 开启lua2rtt, 选择version为lateset最新版本.
-7. 执行pkgs --update更新lua2rtt包到你的bsp下面. 
-8. 执行scons/scons --target=xxx, 进行编译生成工程, 下载运行.
-
-## 2. 卸载lua2rtt
+目前Lua2RTT库已经添加到RT-Thread官方pkgs包中, 可以直接在menuconfig在线包中直接使能.
 
 1. 在env中运行menuconfig. 
-2. 进入RT-Thread online packages -> language packages目录. 
-3. 关闭lua2rtt.
+2. 进入RT-Thread online packages -> language目录. 
+3. 开启Lua2RTT, 选择Submitted version(Lua2RTT库移植的发布版本)为lateset最新版本, 然后选择Porting Lua version(移植的Lua源码版本)为您想要移植的版本(目前支持5.1.4和5.3.4).
+4. 执行pkgs --update更新Lua2RTT包到你的bsp下面. 
+5. 执行scons/scons --target=xxx, 进行编译生成工程, 下载运行.
+
+![安装流程](https://i.imgur.com/wOuODbj.gif)
+
+## 3. 卸载Lua2RTT
+
+1. 在env中运行menuconfig. 
+2. 进入RT-Thread online packages -> language目录. 
+3. 关闭Lua2RTT.
 4. 执行pkgs --update, 并输入`Y`表示同意删除pkg包文件. 
 5. 执行scons/scons --target=xxx, 进行编译生成工程, 下载运行.
 
-## 3. 开发环境
+![卸载流程](https://i.imgur.com/idFfFPN.gif)
 
-1. RT1050-Fire + MDK5.22.0 + ENV0.7. 
-2. STM32F469-Discovery + MDK5.22.0 + ENV0.7. 
+## 4. 注意事项
 
-## 4. 教程推荐
+1. 因为Lua源码使用了LIBC, 所以需要在RTT中添加LIBC支持(已经支持开启Lua2RTT配置自动配置LIBC, 无需手动添加). 
+2. 当开发坏境是MDK时os.date不支持`!`格式化时间. 原因RTT的armlibc不支持gmtime函数. 待RTT源码处理该问题. 
+
+## 5. 教程推荐
 
 1. [AlbertS 作者简书文章](https://www.jianshu.com/u/8fad76e7e05c).
 2. [Lua 5.1 参考手册中文版](https://www.codingnow.com/2000/download/lua_manual.html). 
-3. [Lua 5.3 参考手册中文版](http://cloudwu.github.io/lua53doc/contents.html). 
-
-## 5. 注意事项
-
-1. 当开发坏境是MDK时os.date不支持`!`格式化时间. 原因RTT的armlibc不支持gmtime函数. 待RTT处理. 
+3. [Lua 5.3 参考手册中文版](http://cloudwu.github.io/lua53doc/contents.html).  
   
 ## 6. 欢迎加入. 
 
-非官方讨论腾讯QQ群: [289156309]()(200人). 
+非官方讨论腾讯QQ群: [289156309](). 
+
+## 7. 感谢
+
+1. 该库基于 https://github.com/lua/lua 移植. 
+2. 感谢Lua团队. 本移植是修改了部分原作者的代码针对RTT在线包实现的版本, 该仓库保留原作者的许可声明! 具体原作者许可请查看 https://www.lua.org/license.html, 移植代码部分保留 https://github.com/liu2guang/Lua2RTT/blob/master/LICENSE 许. 
