@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/liu2guang/lua2rtt.svg?branch=master)](https://travis-ci.org/liu2guang/lua2rtt)
 [![release](https://img.shields.io/badge/Release-v0.0.1-orange.svg)](https://github.com/liu2guang/LittlevGL2RTT/releases)
 
-lua2rtt 是在RTThread3.0版本移植的elua5.1.4版本, 目的是无缝嵌入RTT, 无需开发者去移植. 如果您觉得该库看得顺眼舒服，请捐赠颗小星星. 小星星就是更新的动力!!! 
+lua2rtt是在RTThread3.0版本移植的lua仓库, 目的是无缝嵌入RTT, 无需开发者去移植. 如果您觉得该库看得顺眼舒服，请捐赠颗小星星. 小星星就是更新的动力!!! 
 
 已测试跑通的bsp有以下：
 1. RT1050

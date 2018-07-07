@@ -8,18 +8,22 @@ cwd = GetCurrentDir()
 src = []
 inc = []
 
-# add lua2rtt common include
+# add lua common include
 inc = inc + [cwd]
 
-# add lua2rtt basic code
+# add lua basic code
 src = src + ['./lua2rtt.c']
 
 # add group to IDE project
-objs = DefineGroup('lua2rtt', src, depend = ['PKG_USING_LUA2RTT'], CPPPATH = inc)
+if GetDepend('LUA_USING_PORTING_V514'):
+    objs = DefineGroup('lua-5.1.4', src, depend = ['PKG_USING_LUA', 'LUA_USING_PORTING_V514'], CPPPATH = inc)
+    
+if GetDepend('LUA_USING_PORTING_V534'):
+    objs = DefineGroup('lua-5.3.4', src, depend = ['PKG_USING_LUA', 'LUA_USING_PORTING_V534'], CPPPATH = inc)
 
 # traversal subscript
 list = os.listdir(cwd)
-if GetDepend('PKG_USING_LUA2RTT'):
+if GetDepend('PKG_USING_LUA'):
     for d in list:
         path = os.path.join(cwd, d)
         if os.path.isfile(os.path.join(path, 'SConscript')):

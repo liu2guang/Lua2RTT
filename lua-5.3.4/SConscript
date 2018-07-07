@@ -1,0 +1,13 @@
+Import('rtconfig')
+import os
+from building import *
+
+cwd = GetCurrentDir()
+src	= Glob('*.c')
+CPPPATH = [cwd, str(Dir('#'))]
+
+SrcRemove(src, 'luac.c')
+
+group = DefineGroup('lua-5.3.4', src, depend = ['PKG_USING_LUA', 'LUA_USING_PORTING_V534'], CPPPATH = CPPPATH)
+
+Return('group')

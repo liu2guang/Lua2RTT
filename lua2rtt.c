@@ -8,14 +8,11 @@
  * Change Logs:
  * Date           Author       Notes
  * 2018-05-06     liu2guang    The first version.
+ * 2018-07-03     liu2guang    Update lua5.1.2->lua5.3.4. 
  */
  
 #include "lua2rtt.h" 
 #include "shell.h"
-
-#if defined(RT_USING_POSIX) 
-#include <stdio.h> 
-#endif
 
 static struct lua2rtt handle = {0}; 
 
@@ -76,7 +73,6 @@ static void lua2rtt_push_history(void)
     handle.history_current = handle.history_count;
 }
 
-/* Lua回调函数 */ 
 int lua2rtt_readline(const char *prompt, char *buffer, int buffer_size)
 {
     rt_uint8_t ch; 
@@ -88,7 +84,6 @@ start:
     {
         ch = lua2rtt_getc(); 
         
-        /* 处理方向键: 方向键为3个字节: 0x1B 0x5B 0x41/42/43/44 */ 
         if(ch == 0x1b)
         {
             handle.stat = LUA2RTT_WAIT_SPEC_KEY; 
@@ -107,7 +102,7 @@ start:
         {
             handle.stat = LUA2RTT_WAIT_NORMAL; 
             
-            if(ch == 0x41)      /* 键盘UP键 */ 
+            if(ch == 0x41) 
             {
                 if(handle.history_current > 0)
                 {
@@ -119,14 +114,13 @@ start:
                     continue;
                 }
                 
-                /* copy the history command */
                 rt_memcpy(handle.line, &handle.lua_history[handle.history_current][0], LUA2RTT_CMD_SIZE); 
                 handle.line_curpos = handle.line_position = rt_strlen(handle.line); 
                 lua2rtt_handle_history(prompt);
                 
                 continue;
             }
-            else if(ch == 0x42) /* 键盘DOWN键 */ 
+            else if(ch == 0x42) 
             {
                 if(handle.history_current < (handle.history_count-1))
                 {
@@ -134,7 +128,6 @@ start:
                 }
                 else
                 {
-                    /* set to the end of history */
                     if(handle.history_count != 0)
                     {
                         handle.history_current = handle.history_count-1; 
@@ -151,7 +144,7 @@ start:
                 
                 continue;
             }
-            else if(ch == 0x44) /* 键盘LEFT键 */ 
+            else if(ch == 0x44) 
             {
                 if(handle.line_curpos)
                 {
@@ -160,7 +153,7 @@ start:
                 }
                 continue; 
             }
-            else if(ch == 0x43) /* 键盘RIGHT键 */ 
+            else if(ch == 0x43) 
             {
                 if(handle.line_curpos < handle.line_position)
                 {
@@ -171,16 +164,13 @@ start:
             }
         }
         
-        /* 处理空字符和错误 */ 
         if(ch == '\0' || ch == 0xFF) 
         {
             continue; 
         }
         
-        /* 处理方向键删除键 */
         else if(ch == 0x7f || ch == 0x08)
         {
-            /* 输入的命令字符串为空, 不对字符串进行删除处理 */ 
             if(handle.line_curpos == 0)
             {
                 continue;
@@ -191,12 +181,10 @@ start:
             
             if(handle.line_position > handle.line_curpos)
             {
-                /* 删除当前光标所在处的字符 */ 
                 rt_memmove(&handle.line[handle.line_curpos], &handle.line[handle.line_curpos+1], 
                     handle.line_position-handle.line_curpos); 
                 handle.line[handle.line_position] = 0; 
-                
-                /* 重新打印移动后的字符串 */ 
+
                 rt_kprintf("\b%s  \b", &handle.line[handle.line_curpos]); 
                 
                 int index; 
@@ -213,10 +201,8 @@ start:
             continue;
         }
         
-        /* 处理回车键 */ 
         else if(ch == '\r' || ch == '\n')
         {
-            /* 存入历史记录 */ 
             lua2rtt_push_history(); 
             
             rt_kprintf("\n"); 
@@ -228,7 +214,6 @@ start:
             {
                 rt_uint8_t temp = handle.line_position; 
                 
-                /* 拷贝输入命令 */ 
                 rt_strncpy(buffer, handle.line, handle.line_position); 
                 rt_memset(handle.line, 0x00, sizeof(handle.line)); 
                 buffer[handle.line_position] = 0; 
@@ -237,7 +222,6 @@ start:
             }
         }
         
-        /* 处理ctrl+D退出键 */ 
         else if(ch == 0x04)
         {
             if(handle.line_position == 0)
@@ -250,25 +234,21 @@ start:
             }
         }
         
-        /* 处理Tab按键 */ 
         else if(ch == '\t')
         {
             continue; 
         }
         
-        /* 处理其他控制字符 */ 
         else if(ch < 0x20 || ch >= 0x80)
         {
             continue;
         }
         
-        /* 判断输出命令是否过长, 过长后不处理字符, 默认128Byte字符 */
         if(handle.line_position >= LUA2RTT_CMD_SIZE)
         {
             continue; 
         }
         
-        /* 处理普通字符, 将普通字符添加到缓存中 */ 
         if(handle.line_curpos < handle.line_position)
         {
             rt_memmove(&handle.line[handle.line_curpos+1], &handle.line[handle.line_curpos],
@@ -306,36 +286,30 @@ static void lua2rtt_run(void *p)
         return; 
     }
     
-    /* 缓存msh使用的串口回调函数 */ 
     handle.rx_indicate = handle.device->rx_indicate; 
-    
-    /* 设置Lua2RTT的串口回调函数 */ 
     rt_device_set_rx_indicate(handle.device, lua2rtt_rxcb);
     
-    /* 阻塞式运行lua解析器 */ 
     if(handle.argc == 1)
     {
         rt_kprintf("\nPress CTRL+D to exit Lua.\n"); 
     }
     extern int lua_main(int argc, char **argv); 
     lua_main(handle.argc, handle.argv); 
-    
-    /* 释放参数分配内存 */ 
+
     if(handle.argc > 1)
     {
         rt_free(handle.argv[1]); 
     }
     
-    /* 退出Lua2RTT解析器时恢复msh对串口的控制权 */ 
     rt_device_set_rx_indicate(handle.device, handle.rx_indicate); 
+    rt_kprintf("Exit Lua interactive mode.\n"); 
+    rt_kprintf(FINSH_PROMPT);
 }
 
-/* MSH Lua解析器启动命令 */ 
 static int lua2rtt(int argc, char **argv) 
 {
     static rt_bool_t history_init = RT_FALSE; 
     
-    /* 初始化Lua2RTT句柄, 但是不初始化重复初始化历史记录 */ 
     if(history_init == RT_FALSE)
     {
         rt_memset(&handle, 0x00, sizeof(struct lua2rtt)); 
@@ -356,10 +330,8 @@ static int lua2rtt(int argc, char **argv)
         handle.rx_indicate = RT_NULL; 
     }
     
-    /* 初始化Lua2RTT串口数据接收信号量 */ 
     rt_sem_init(&(handle.rx_sem), "lua2rtt_rxsem", 0, RT_IPC_FLAG_FIFO); 
     
-    /* 处理输出参数 */ 
     handle.argc = argc; 
     
     handle.argv[0] = "lua"; 
@@ -374,7 +346,6 @@ static int lua2rtt(int argc, char **argv)
         rt_strncpy(handle.argv[1], argv[1], len);
     }
     
-    /* 创建Lua2RTT解析器线程 */ 
     rt_uint8_t prio = rt_thread_self()->current_priority+1; 
     handle.thread = rt_thread_create("lua2rtt_run", lua2rtt_run, RT_NULL, 
         LUA2RTT_THREAD_STACK_SIZE, prio, 10); 
@@ -387,4 +358,4 @@ static int lua2rtt(int argc, char **argv)
     
     return RT_EOK; 
 } 
-MSH_CMD_EXPORT_ALIAS(lua2rtt, lua, The lua5.1.4 shell cmd.); 
+MSH_CMD_EXPORT_ALIAS(lua2rtt, lua, Execute Lua parser.); 
