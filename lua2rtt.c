@@ -301,8 +301,9 @@ static void lua2rtt_run(void *p)
         rt_free(handle.argv[1]); 
     }
     
+    rt_sem_detach(&(handle.rx_sem)); 
     rt_device_set_rx_indicate(handle.device, handle.rx_indicate); 
-    rt_kprintf("Exit Lua interactive mode.\n"); 
+    // rt_kprintf("Exit Lua interactive mode.\n"); 
     rt_kprintf(FINSH_PROMPT);
 }
 
@@ -347,10 +348,10 @@ static int lua2rtt(int argc, char **argv)
     }
     
     rt_uint8_t prio = rt_thread_self()->current_priority+1; 
-    handle.thread = rt_thread_create("lua2rtt_run", lua2rtt_run, RT_NULL, 
-        LUA2RTT_THREAD_STACK_SIZE, prio, 10); 
+    handle.thread = rt_thread_create("lua", lua2rtt_run, RT_NULL, LUA2RTT_THREAD_STACK_SIZE, prio, 10); 
     if(handle.thread == RT_NULL)
     {
+        rt_sem_detach(&(handle.rx_sem)); 
         LUA2RTT_DBG("The Lua interpreter thread create failed.\n"); 
         return RT_ERROR; 
     }
