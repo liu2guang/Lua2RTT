@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/liu2guang/Lua2RTT.svg?branch=master)](https://travis-ci.org/liu2guang/Lua2RTT)
 [![release](https://img.shields.io/badge/Release-v1.0.0-orange.svg)](https://github.com/liu2guang/Lua2RTT/releases)
 
-Lua2RTT是在RTThread3.0版本移植的Lua库, 目的是无缝嵌入RTT, 无需开发者去移植. 如果您觉得该库看得顺眼舒服，请捐赠颗小星星. 小星星就是更新的动力!!! 
+Lua2RTT是在RT-Thread3.0及以上版本移植的Lua库, 目的是无缝嵌入RTT, 无需开发者去移植. 如果您觉得该库看得顺眼舒服，请捐赠颗小星星. 小星星就是更新的动力!!! 
 
 ## 1. 效果图
 
@@ -34,14 +34,14 @@ Lua2RTT是在RTThread3.0版本移植的Lua库, 目的是无缝嵌入RTT, 无需�
 ## 4. 注意事项
 
 1. 因为Lua源码使用了LIBC, 所以需要在RTT中添加LIBC支持(已经支持开启Lua2RTT配置自动配置LIBC, 无需手动添加). 
-2. 当开发坏境是MDK时os.date不支持`!`格式化时间. 原因RTT的armlibc不支持gmtime函数. 待RTT源码处理该问题. 
+2. 需要虚拟文件系统的支持（Device virtual file system），即便没有涉及文件系统也要将其打开
 
 ## 5. 教程推荐
 
 1. [AlbertS 作者简书文章](https://www.jianshu.com/u/8fad76e7e05c).
 2. [Lua 5.1 参考手册中文版](https://www.codingnow.com/2000/download/lua_manual.html). 
 3. [Lua 5.3 参考手册中文版](http://cloudwu.github.io/lua53doc/contents.html).  
-  
+
 ## 6. 欢迎加入. 
 
 非官方讨论腾讯QQ群: [289156309](). 
