@@ -9,6 +9,8 @@ cwd = GetCurrentDir()
 src = []
 inc = []
 
+objs = []
+
 # add lua common include
 inc = inc + [cwd]
 
