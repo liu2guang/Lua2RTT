@@ -1,10 +1,9 @@
 Import('rtconfig')
-import os
 from building import *
 
 cwd = GetCurrentDir()
 src	= Glob('*.c')
-CPPPATH = [cwd, str(Dir('#'))]
+CPPPATH = [cwd]
 
 group = DefineGroup('lua-5.1.4', src, depend = ['PKG_USING_LUA', 'LUA_USING_PORTING_V514'], CPPPATH = CPPPATH)
 

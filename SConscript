@@ -19,13 +19,19 @@ src = src + ['./lua2rtt.c']
 if GetDepend('LUA_USING_PORTING_V514'):
     objs = DefineGroup('lua-5.1.4', src, depend = ['PKG_USING_LUA', 'LUA_USING_PORTING_V514'], CPPPATH = inc)
     #delate non-used files
-    shutil.rmtree(os.path.join(cwd,'lua-5.3.4'))    
+    try:
+        shutil.rmtree(os.path.join(cwd,'lua-5.3.4'))    
+    except:
+        pass
     
 if GetDepend('LUA_USING_PORTING_V534'):
     objs = DefineGroup('lua-5.3.4', src, depend = ['PKG_USING_LUA', 'LUA_USING_PORTING_V534'], CPPPATH = inc)
     #delate non-used files
-    shutil.rmtree(os.path.join(cwd,'lua-5.1.4'))
-    
+    try:
+        shutil.rmtree(os.path.join(cwd,'lua-5.1.4'))
+    except:
+        pass
+        
 # traversal subscript
 list = os.listdir(cwd)
 if GetDepend('PKG_USING_LUA'):
