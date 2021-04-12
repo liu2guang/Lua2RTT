@@ -73,8 +73,8 @@
 /*
 #if defined(LUA_USE_RTTHREAD)
 #define LUA_USE_POSIX
-#define LUA_USE_READLINE  
-#endif 
+#define LUA_USE_READLINE
+#endif
 */
 
 /*
@@ -586,13 +586,13 @@
 #error "Compiler does not support 'long long'. Use option '-DLUA_32BITS' \
 or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 
-#endif				/* } */
+#endif              /* } */
 
-#else				/* }{ */
+#else               /* }{ */
 
 #error "numeric integer type not defined"
 
-#endif				/* } */
+#endif              /* } */
 
 /* }================================================================== */
 
@@ -608,9 +608,9 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 ** (All uses in Lua have only one format item.)
 */
 #if !defined(LUA_USE_C89)
-#define l_sprintf(s,sz,f,i)	snprintf(s,sz,f,i)
+#define l_sprintf(s,sz,f,i) snprintf(s,sz,f,i)
 #else
-#define l_sprintf(s,sz,f,i)	((void)(sz), sprintf(s,f,i))
+#define l_sprintf(s,sz,f,i) ((void)(sz), sprintf(s,f,i))
 #endif
 
 
@@ -621,7 +621,7 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 ** implementation.
 */
 #if !defined(LUA_USE_C89)
-#define lua_strx2number(s,p)		lua_str2number(s,p)
+#define lua_strx2number(s,p)        lua_str2number(s,p)
 #endif
 
 
@@ -633,7 +633,7 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 */
 #if !defined(LUA_USE_C89)
 #define lua_number2strx(L,b,sz,f,n)  \
-	((void)L, l_sprintf(b,sz,f,(LUAI_UACNUMBER)(n)))
+    ((void)L, l_sprintf(b,sz,f,(LUAI_UACNUMBER)(n)))
 #endif
 
 
@@ -646,8 +646,8 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 #if defined(LUA_USE_C89) || (defined(HUGE_VAL) && !defined(HUGE_VALF))
 #undef l_mathop  /* variants not available */
 #undef lua_str2number
-#define l_mathop(op)		(lua_Number)op  /* no variant */
-#define lua_str2number(s,p)	((lua_Number)strtod((s), (p)))
+#define l_mathop(op)        (lua_Number)op  /* no variant */
+#define lua_str2number(s,p) ((lua_Number)strtod((s), (p)))
 #endif
 
 
@@ -657,14 +657,14 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 ** available, otherwise it will use 'ptrdiff_t' (the nearest thing to
 ** 'intptr_t' in C89)
 */
-#define LUA_KCONTEXT	ptrdiff_t
+#define LUA_KCONTEXT    ptrdiff_t
 
 #if !defined(LUA_USE_C89) && defined(__STDC_VERSION__) && \
     __STDC_VERSION__ >= 199901L
 #include <stdint.h>
 #if defined(INTPTR_MAX)  /* even in C99 this type is optional */
 #undef LUA_KCONTEXT
-#define LUA_KCONTEXT	intptr_t
+#define LUA_KCONTEXT    intptr_t
 #endif
 #endif
 
@@ -675,7 +675,7 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 ** macro must include header 'locale.h'.)
 */
 #if !defined(lua_getlocaledecpoint)
-#define lua_getlocaledecpoint()		(localeconv()->decimal_point[0])
+#define lua_getlocaledecpoint()     (localeconv()->decimal_point[0])
 #endif
 
 /* }================================================================== */
@@ -703,7 +703,7 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 */
 #if defined(LUA_USE_APICHECK)
 #include <assert.h>
-#define luai_apicheck(l,e)	assert(e)
+#define luai_apicheck(l,e)  assert(e)
 #endif
 
 /* }================================================================== */
@@ -724,9 +724,9 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 ** space (and to reserve some numbers for pseudo-indices).
 */
 #if LUAI_BITSINT >= 32
-#define LUAI_MAXSTACK		1000000
+#define LUAI_MAXSTACK       1000000
 #else
-#define LUAI_MAXSTACK		15000
+#define LUAI_MAXSTACK       15000
 #endif
 
 
@@ -735,7 +735,7 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 ** a Lua state with very fast access.
 ** CHANGE it if you need a different size.
 */
-#define LUA_EXTRASPACE		(sizeof(void *))
+#define LUA_EXTRASPACE      (sizeof(void *))
 
 
 /*
@@ -743,7 +743,7 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 @@ of a function in debug information.
 ** CHANGE it if you want a different size.
 */
-#define LUA_IDSIZE	60
+#define LUA_IDSIZE  60
 
 
 /*
@@ -754,7 +754,7 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 ** 'string.format'.)
 */
 #if LUA_FLOAT_TYPE == LUA_FLOAT_LONGDOUBLE
-#define LUAL_BUFFERSIZE		8192
+#define LUAL_BUFFERSIZE     8192
 #else
 #define LUAL_BUFFERSIZE   ((int)(0x80 * sizeof(void*) * sizeof(lua_Integer)))
 #endif
@@ -767,8 +767,8 @@ or '-DLUA_C89_NUMBERS'(see file 'luaconf.h' for details)"
 ** Lua does not use these macros anymore; they are here for
 ** compatibility only.
 */
-#define LUA_QL(x)	"'" x "'"
-#define LUA_QS		LUA_QL(" % s")
+#define LUA_QL(x)   "'" x "'"
+#define LUA_QS      LUA_QL(" % s")
 
 
 

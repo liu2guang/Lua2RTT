@@ -35,6 +35,6 @@
 #define LREGISTER(L, name, table)   \
     luaL_register(L, name, table);  \
     return 1
-#endif 
+#endif
 
 #endif /* lrodefs_h */

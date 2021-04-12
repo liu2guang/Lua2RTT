@@ -94,9 +94,9 @@
 
 #endif              /* } */
 
-/* ÕâÀï´ıÓÅ»¯²»ÒªÈ¥ĞŞ¸ÄÔ´Âë, ËùÓĞ¶¯×÷¶¼ÔÚluaconf.hºÍlua2rtt.cºÍlua2rtt.hÖĞÌí¼Ó, 
- * Ä¿Ç°±£´æÀúÊ·¼ÇÂ¼²»ÊÇÍ¨¹ılua_savelineÊµÏÖ, ÆÀ¹ÀÊ¹ÓÃlua_saveline·½·¨ÊÇ·ñ¸ü¼Ó
- * ·½±ãÍ¨ÓÃºÍ¼òµ¥????? */ 
+/* è¿™é‡Œå¾…ä¼˜åŒ–ä¸è¦å»ä¿®æ”¹æºç , æ‰€æœ‰åŠ¨ä½œéƒ½åœ¨luaconf.hå’Œlua2rtt.cå’Œlua2rtt.hä¸­æ·»åŠ ,
+ * ç›®å‰ä¿å­˜å†å²è®°å½•ä¸æ˜¯é€šè¿‡lua_savelineå®ç°, è¯„ä¼°ä½¿ç”¨lua_savelineæ–¹æ³•æ˜¯å¦æ›´åŠ 
+ * æ–¹ä¾¿é€šç”¨å’Œç®€å•????? */
 #undef lua_readline
 #undef lua_saveline
 #undef lua_freeline
