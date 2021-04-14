@@ -31,22 +31,17 @@ Lua2RTT是在RT-Thread3.0及以上版本移植的Lua库, 目的是无缝嵌入RT
 
 ![卸载流程](https://i.imgur.com/idFfFPN.gif)
 
-## 4. 注意事项
-
-1. 因为Lua源码使用了LIBC, 所以需要在RTT中添加LIBC支持(已经自动添加依赖, 无需手动添加). 
-2. 需要虚拟文件系统的支持，即便没有涉及文件系统也要将其打开(已经自动添加依赖，无需手动添加)
-
-## 5. 教程推荐
+## 4. 教程推荐
 
 1. [AlbertS 作者简书文章](https://www.jianshu.com/u/8fad76e7e05c).
 2. [Lua 5.1 参考手册中文版](https://www.codingnow.com/2000/download/lua_manual.html). 
 3. [Lua 5.3 参考手册中文版](http://cloudwu.github.io/lua53doc/contents.html).  
 
-## 6. 欢迎加入. 
+## 5. 欢迎加入. 
 
 非官方讨论腾讯QQ群: [289156309](). 
 
-## 7. 感谢
+## 6. 感谢
 
 1. 该库基于 https://github.com/lua/lua 移植. 
-2. 感谢Lua团队. 本移植是修改了部分原作者的代码针对RTT在线包实现的版本, 该仓库保留原作者的许可声明! 具体原作者许可请查看 https://www.lua.org/license.html, 移植代码部分保留 https://github.com/liu2guang/Lua2RTT/blob/master/LICENSE 许. 
+2. 感谢Lua团队. 本移植是修改了部分原作者的代码针对RTT在线包实现的版本, 该仓库保留原作者的许可声明! 具体原作者许可请查看 https://www.lua.org/license.html, 移植代码部分保留 https://github.com/liu2guang/Lua2RTT/blob/master/LICENSE 许可. 

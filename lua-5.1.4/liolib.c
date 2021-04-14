@@ -602,7 +602,7 @@ const luaL_Reg iolib[] =
 
 #undef  MIN_OPT_LEVEL
 #define MIN_OPT_LEVEL 1
-#include "lrodefs.h" 
+#include "lrodefs.h"
 const LUA_REG_TYPE flib[] =
 {
     {LSTRKEY("close")     , LFUNCVAL(io_close)   },

@@ -13,11 +13,11 @@
 #define __LUA2RTT_H_
 
 #include <rtthread.h>
-#include "luaconf.h" 
+#include "luaconf.h"
 
 #define LUA2RTT_USING_DEBUG
 #ifndef LUA2RTT_USING_DEBUG
-#define LUA2RTT_DBG(fmt, ...) 
+#define LUA2RTT_DBG(fmt, ...)
 #else
 #define LUA2RTT_DBG(fmt, ...)                \
 do{                                          \
@@ -45,25 +45,25 @@ enum lua2rtt_input_stat
 
 struct lua2rtt
 {
-    rt_thread_t thread; 
-    struct rt_semaphore rx_sem; 
-    
-    enum lua2rtt_input_stat stat; 
-    
-    int   argc; 
-    char *argv[3]; 
-    
-    char lua_history[LUA2RTT_HISTORY_LINES][LUA2RTT_CMD_SIZE]; 
-    rt_uint16_t history_count; 
-    rt_uint16_t history_current; 
-    
-    char line[LUA2RTT_CMD_SIZE]; 
+    rt_thread_t thread;
+    struct rt_semaphore rx_sem;
+
+    enum lua2rtt_input_stat stat;
+
+    int   argc;
+    char *argv[3];
+
+    char lua_history[LUA2RTT_HISTORY_LINES][LUA2RTT_CMD_SIZE];
+    rt_uint16_t history_count;
+    rt_uint16_t history_current;
+
+    char line[LUA2RTT_CMD_SIZE];
     rt_uint16_t line_position;
-    rt_uint8_t line_curpos; 
-    
-    rt_device_t device; 
+    rt_uint8_t line_curpos;
+
+    rt_device_t device;
     rt_err_t (*rx_indicate)(rt_device_t dev, rt_size_t size); /* msh??????? */
-}; 
-typedef struct lua2rtt *lua2rtt_t; 
+};
+typedef struct lua2rtt *lua2rtt_t;
 
 #endif

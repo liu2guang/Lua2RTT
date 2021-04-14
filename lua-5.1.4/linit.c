@@ -16,18 +16,18 @@
 #include "luaconf.h"
 
 #if defined(LUA2RTT_USING_EXLIBS_CJSON)
-    LUALIB_API int luaopen_cjson(lua_State *L); 
-#endif 
+    LUALIB_API int luaopen_cjson(lua_State *L);
+#endif
 
 static const luaL_Reg lualibs[] =
 {
-    /* 基本库 */ 
+    /* 基本库 */
     {""             , luaopen_base   },
     {LUA_LOADLIBNAME, luaopen_package},
     {LUA_IOLIBNAME  , luaopen_io     },
     {LUA_STRLIBNAME , luaopen_string },
 
-    /* 扩展库 */ 
+    /* 扩展库 */
 #if LUA_OPTIMIZE_MEMORY == 0
     {LUA_MATHLIBNAME, luaopen_math   },
     {LUA_TABLIBNAME , luaopen_table  },
@@ -35,12 +35,12 @@ static const luaL_Reg lualibs[] =
     {LUA_OSLIBNAME  , luaopen_os     },
 #endif
 
-    /* 外部库 */ 
+    /* 外部库 */
 #if defined(LUA2RTT_USING_EXLIBS_CJSON)
-    {"cjson"        , luaopen_cjson  }, 
-#endif 
+    {"cjson"        , luaopen_cjson  },
+#endif
 
-    {NULL, NULL} 
+    {NULL, NULL}
 };
 
 extern const luaR_entry strlib[];
@@ -72,7 +72,7 @@ const luaR_table lua_rotable[] =
 LUALIB_API void luaL_openlibs(lua_State *L)
 {
     const luaL_Reg *lib = lualibs;
-    
+
     for (; lib->func; lib++)
     {
         lua_pushcfunction(L, lib->func);

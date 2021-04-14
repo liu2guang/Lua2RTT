@@ -76,8 +76,8 @@ static int os_getenv(lua_State *L)
 #include <rtconfig.h>
 static int os_clock(lua_State *L)
 {
-    // lua_pushnumber(L, ((lua_Number)clock()) / (lua_Number)CLOCKS_PER_SEC); 
-    lua_pushnumber(L, ((lua_Number)clock()) / (lua_Number)RT_TICK_PER_SECOND); 
+    // lua_pushnumber(L, ((lua_Number)clock()) / (lua_Number)CLOCKS_PER_SEC);
+    lua_pushnumber(L, ((lua_Number)clock()) / (lua_Number)RT_TICK_PER_SECOND);
     return 1;
 }
 
@@ -143,7 +143,7 @@ static int os_date(lua_State *L)
     {
         stm = localtime(&t);
     }
-    
+
     if (stm == NULL)  /* invalid date? */
     {
         lua_pushnil(L);
@@ -210,7 +210,7 @@ static int os_time(lua_State *L)
     else
         lua_pushnumber(L, (lua_Number)t);
     return 1;
-} 
+}
 
 #if !defined LUA_NUMBER_INTEGRAL
 static int os_difftime(lua_State *L)
@@ -241,7 +241,7 @@ static int os_exit(lua_State *L)
     exit(luaL_optint(L, 1, EXIT_SUCCESS));
 }
 
-#define MIN_OPT_LEVEL 1 
+#define MIN_OPT_LEVEL 1
 #include "lrodefs.h"
 const LUA_REG_TYPE syslib[] =
 {
@@ -263,5 +263,5 @@ const LUA_REG_TYPE syslib[] =
 
 LUALIB_API int luaopen_os(lua_State *L)
 {
-    LREGISTER(L, LUA_OSLIBNAME, syslib); 
+    LREGISTER(L, LUA_OSLIBNAME, syslib);
 }
