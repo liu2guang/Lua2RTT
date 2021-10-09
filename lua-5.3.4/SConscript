@@ -1,5 +1,3 @@
-Import('rtconfig')
-import os
 from building import *
 
 cwd = GetCurrentDir()
