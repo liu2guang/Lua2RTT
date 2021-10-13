@@ -5,7 +5,6 @@ from building import *
 # get current dir path
 cwd = GetCurrentDir()
 
-# init src, inc and objs vars
 src = []
 inc = []
 objs = []
